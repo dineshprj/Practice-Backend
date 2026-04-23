@@ -1,47 +1,50 @@
-const express=require('express');
-const app=express();
+    const express=require('express');
+    const app=express();
+
+    const cors=require('cors');
+    
+    app.use(cors());
 
 
-//Route
-app.get('/',(req,res)=>{
-    res.send('Hello World');
-});
+    //Route
 
-app.get('/about',(req,res)=>{
+    app.use(express.json());
 
-    res.send(` <h1>This is about page</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos modi minus illo?</p>`);
-});
+    let storedata=[]; //Store Data
 
-app.get('/help',(req,res)=>{
-    res.send(`this is help section
-        you can ask for help  us` );
-});
+    app.post('/data',(req,res)=>{
+        console.log(req.body);
 
-app.get('/api',(req,res)=>{
-    res.json({
-        name:"Dinesh",
-        role:"Developer"
+        const {name,role}=req.body;
+  
+
+        if(!name || !role){
+            return res.status(400).json({
+                message :" name and role are requireed"
+            });
+        }
+              const data={name,role};
+
+
+        storedata.push(data);  //store here
+
+        res.status(201).json({
+            message:"Data recieved",
+            data: data
+        });
     });
-});
 
 
-app.use(express.json());
+    //Get -return Data
 
-app.post('/data',(req,res)=>{
-    console.log(req.body);
-    res.json({
-        message:"Data recieved",
-        data: req.body
+    app.get('/data',(req,res)=>{
+        res.json({
+            data:storedata
+        });
     });
-});
 
-app.get('/data',(req,res)=>{
-    res.send('data  is sucessfully uploadeed');
-})
+    //Start server
 
-//Start server
-
-app.listen(3000,()=>{
-    console.log('Server   is running on http://localhost:3000');
-});
+    app.listen(3000,()=>{
+        console.log('Server   is running on http://localhost:3000');
+    });
