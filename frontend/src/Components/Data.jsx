@@ -67,17 +67,28 @@ const Data = () => {
     <div>
       <h1>User Form</h1>
 
-      <form>
+      <form onSubmit={handlesubmit}>
         <br />
         <label htmlFor="name">Name</label>
 
-        <input type="text" placeholder="name" />
+        <input 
+        name="name"
+        value={form.name}
+        onChange={handlechange}
+        type="text" 
+        placeholder="name" />
 
         <br />
         <br />
 
         <label htmlFor="role">Role</label>
-        <input type="text" placeholder="role" />
+        <input 
+        type="text" 
+        name="role"
+        placeholder="role" 
+        value={form.role}
+        onChange={handlechange}
+        />
 
         <br />
         <br />
@@ -87,6 +98,16 @@ const Data = () => {
 
       <br />
       <br />
+
+      <h2>USers</h2>
+
+      {
+        data.map((item,index)=>(
+            <div key={index}>
+                <p><b>{item.name}</b> - {item.role}</p>
+            </div>
+        ))
+      }
     </div>
   );
 };
